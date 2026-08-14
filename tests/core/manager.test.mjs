@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { DwindleManager } from "../../contents/code/core/manager.mjs";
+import { DwindleManager } from "../../contents/runtime/core/manager.mjs";
 
 test("a new client splits the active tiled client before considering the cursor fallback", () => {
     const manager = new DwindleManager();

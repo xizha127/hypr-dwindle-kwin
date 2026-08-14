@@ -1,3 +1,4 @@
+// Dwindle root manager.
 import { DwindleTree } from "./tree.mjs";
 
 function squaredDistanceToRect(point, rect) {

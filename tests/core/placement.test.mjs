@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import {
     automaticOrientation,
     cardinalDirection,
-} from "../../contents/code/core/placement.mjs";
+} from "../../contents/runtime/core/placement.mjs";
 
 test("automaticOrientation stacks a tall target instead of creating portrait pillars", () => {
     assert.equal(

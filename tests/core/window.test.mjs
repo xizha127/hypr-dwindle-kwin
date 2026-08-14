@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { isEligibleWindow } from "../../contents/code/kwin/window.mjs";
+import { isEligibleWindow } from "../../contents/runtime/kwin/window.mjs";
 
 test("isEligibleWindow accepts a normal managed application window", () => {
     assert.equal(isEligibleWindow({

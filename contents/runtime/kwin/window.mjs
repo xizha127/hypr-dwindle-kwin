@@ -1,3 +1,4 @@
+// KWin window eligibility helpers.
 export function isEligibleWindow(window) {
     return window != null
         && window.normalWindow === true

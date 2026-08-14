@@ -1,3 +1,4 @@
+// Runtime entry point for the declarative KWin script.
 import { DwindleManager } from "./core/manager.mjs";
 import { directionalNeighbor } from "./core/focus.mjs";
 import { insetRect } from "./core/geometry.mjs";

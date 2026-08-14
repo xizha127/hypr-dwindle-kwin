@@ -1,3 +1,4 @@
+// Aspect-aware placement helpers.
 export function automaticOrientation(rect, splitWidthMultiplier = 1) {
     return rect.width > rect.height * splitWidthMultiplier
         ? "horizontal"

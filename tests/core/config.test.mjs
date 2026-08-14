@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { loadSettings } from "../../contents/code/kwin/config.mjs";
+import { loadSettings } from "../../contents/runtime/kwin/config.mjs";
 
 test("loadSettings exposes the configured Hyprland dwindle defaults", () => {
     const settings = loadSettings((_key, fallback) => fallback);

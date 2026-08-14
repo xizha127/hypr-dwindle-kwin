@@ -1,3 +1,4 @@
+// Binary dwindle tree model.
 import { automaticOrientation, cardinalDirection } from "./placement.mjs";
 
 function leaf(windowId) {

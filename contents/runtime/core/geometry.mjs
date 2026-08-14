@@ -1,3 +1,4 @@
+// Workspace geometry helpers.
 export function insetRect(rect, amount) {
     const inset = Math.max(0, amount);
     return {

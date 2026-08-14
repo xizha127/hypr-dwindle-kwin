@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { DwindleTree } from "../../contents/code/core/tree.mjs";
+import { DwindleTree } from "../../contents/runtime/core/tree.mjs";
 
 test("a portrait target splits top to bottom at fifty-fifty", () => {
     const tree = new DwindleTree();

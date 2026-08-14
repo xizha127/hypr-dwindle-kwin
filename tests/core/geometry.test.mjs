@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { insetRect } from "../../contents/code/core/geometry.mjs";
+import { insetRect } from "../../contents/runtime/core/geometry.mjs";
 
 test("insetRect reserves the configured outer gap on every workspace edge", () => {
     assert.deepEqual(

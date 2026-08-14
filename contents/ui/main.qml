@@ -1,6 +1,6 @@
 import QtQuick
 import org.kde.kwin
-import "../code/main.mjs" as HyprDwindle
+import "../runtime/main.mjs" as HyprDwindle
 
 Item {
     id: root

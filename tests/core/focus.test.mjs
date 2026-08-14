@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { directionalNeighbor } from "../../contents/code/core/focus.mjs";
+import { directionalNeighbor } from "../../contents/runtime/core/focus.mjs";
 
 const layout = new Map([
     ["left", { x: 0, y: 0, width: 499, height: 1000 }],

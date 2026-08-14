@@ -1,3 +1,4 @@
+// KWin script configuration bridge.
 const DEFAULTS = Object.freeze({
     gapsIn: 2,
     gapsOut: 4,
