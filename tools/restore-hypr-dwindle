@@ -13,6 +13,19 @@ for key in magnetileEnabled poloniumEnabled kwiltEnabled krohnkiteEnabled; do
     [[ -f "$backup_dir/$key" ]] || continue
     kwriteconfig6 --file kwinrc --group Plugins --key "$key" "$(<"$backup_dir/$key")"
 done
+shortcut_keys=(
+    'Window Quick Tile Left'
+    'Window Quick Tile Right'
+    'Window Quick Tile Top'
+    'Window Quick Tile Bottom'
+    'Window to Previous Screen'
+    'Window to Next Screen'
+    'Show Desktop'
+)
+for index in "${!shortcut_keys[@]}"; do
+    [[ -f "$backup_dir/shortcut-$index" ]] || continue
+    kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "${shortcut_keys[index]}" "$(<"$backup_dir/shortcut-$index")"
+done
 qdbus6 org.kde.KWin /KWin reconfigure
 printf 'Restored prior tiler plugin states from %s.\n' "$backup_dir"
 printf 'Native [Tiling] state remains in %s/kwinrc.before-hypr-dwindle for deliberate manual restoration.\n' "$backup_dir"

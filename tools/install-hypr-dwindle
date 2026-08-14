@@ -11,6 +11,19 @@ for key in magnetileEnabled poloniumEnabled kwiltEnabled krohnkiteEnabled; do
     kreadconfig6 --file kwinrc --group Plugins --key "$key" > "$backup_dir/$key"
 done
 
+shortcut_keys=(
+    'Window Quick Tile Left'
+    'Window Quick Tile Right'
+    'Window Quick Tile Top'
+    'Window Quick Tile Bottom'
+    'Window to Previous Screen'
+    'Window to Next Screen'
+    'Show Desktop'
+)
+for index in "${!shortcut_keys[@]}"; do
+    kreadconfig6 --file kglobalshortcutsrc --group kwin --key "${shortcut_keys[index]}" > "$backup_dir/shortcut-$index"
+done
+
 # Keep an untouched copy for manual recovery. restore-hypr-dwindle never writes
 # this wholesale, so unrelated later KWin changes are not clobbered.
 cp "${XDG_CONFIG_HOME:-$HOME/.config}/kwinrc" "$backup_dir/kwinrc.before-hypr-dwindle"
@@ -19,6 +32,9 @@ printf '%s\n' "$backup_dir" > "$state_root/latest-backup"
 kpackagetool6 --type KWin/Script --upgrade "$project_dir"
 kwriteconfig6 --file kwinrc --group Plugins --key magnetileEnabled false
 kwriteconfig6 --file kwinrc --group Plugins --key hypr-dwindleEnabled true
+for index in "${!shortcut_keys[@]}"; do
+    kwriteconfig6 --file kglobalshortcutsrc --group kwin --key "${shortcut_keys[index]}" "none,none,${shortcut_keys[index]}"
+done
 qdbus6 org.kde.KWin /KWin reconfigure
 
 printf 'Installed Hypr Dwindle. Backup: %s\n' "$backup_dir"
