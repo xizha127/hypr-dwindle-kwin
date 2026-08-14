@@ -11,5 +11,5 @@
   },
   "X-Plasma-API": "declarativescript",
   "X-Plasma-API-Minimum-Version": "6.7",
-  "X-Plasma-MainScript": "ui/hypr-dwindle.qml"
+  "X-Plasma-MainScript": "ui/entry.qml"
 }

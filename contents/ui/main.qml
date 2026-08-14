@@ -1,4 +1,4 @@
-// Required KWin package entry point; metadata selects hypr-dwindle.qml.
+// Required KWin package entry point; metadata selects entry.qml.
 import QtQuick
 import org.kde.kwin
 import "../runtime/main.mjs" as HyprDwindle
