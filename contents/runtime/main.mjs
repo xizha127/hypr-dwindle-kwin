@@ -210,15 +210,30 @@ class Controller {
     onMoveStepped(window) {
         const id = windowId(window);
         if (!this.moveCandidates.has(id) || this.moving.has(id) || window.tile != null) return;
-        this.moving.add(id);
+        this.beginMove(window);
+    }
+
+    onTileChanged(window, tile) {
+        const id = windowId(window);
+        if (this.rendering || !this.moveCandidates.has(id) || this.moving.has(id) || tile != null) return;
+        this.beginMove(window);
+    }
+
+    beginMove(window) {
+        const id = windowId(window);
         const rootKey = this.manager.rootFor(id);
+        if (rootKey == null) return;
+        this.moving.add(id);
         this.manager.park(id);
         this.renderRoot(rootKey);
     }
 
     onMoveFinished(window) {
         const id = windowId(window);
-        this.moveCandidates.delete(id);
+        const wasMoveCandidate = this.moveCandidates.delete(id);
+        if (wasMoveCandidate && !this.moving.has(id) && window.tile == null) {
+            this.beginMove(window);
+        }
         if (!this.moving.delete(id)) return;
         const context = this.contextFor(window);
         if (context == null || !isEligibleWindow(window) || this.floating.has(id)) return;
@@ -320,6 +335,7 @@ class Controller {
         window.interactiveMoveResizeStarted.connect(() => this.onMoveStarted(window));
         window.interactiveMoveResizeStepped.connect(() => this.onMoveStepped(window));
         window.interactiveMoveResizeFinished.connect(() => this.onMoveFinished(window));
+        window.tileChanged.connect((tile) => this.onTileChanged(window, tile));
         this.queueWindow(window);
     }
 
