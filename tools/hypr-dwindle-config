@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+group='Script-hypr-dwindle'
+keys=(gapsIn gapsOut preserveSplit smartSplit smartResizing preciseMouseMove useActiveForSplits splitWidthMultiplier defaultSplitRatio ratioMinimum ratioMaximum logLevel)
+
+usage() {
+    printf 'Usage: %s show | set KEY VALUE\n' "${0##*/}" >&2
+    exit 2
+}
+
+valid_key() {
+    local candidate=$1
+    local key
+    for key in "${keys[@]}"; do
+        [[ $key == "$candidate" ]] && return 0
+    done
+    return 1
+}
+
+case ${1:-} in
+    show)
+        [[ $# == 1 ]] || usage
+        for key in "${keys[@]}"; do
+            printf '%s=%s\n' "$key" "$(kreadconfig6 --file kwinrc --group "$group" --key "$key")"
+        done
+        ;;
+    set)
+        [[ $# == 3 ]] || usage
+        valid_key "$2" || { printf 'Unknown Hypr Dwindle setting: %s\n' "$2" >&2; exit 2; }
+        kwriteconfig6 --file kwinrc --group "$group" --key "$2" "$3"
+        qdbus6 org.kde.KWin /KWin reconfigure
+        ;;
+    *) usage ;;
+esac

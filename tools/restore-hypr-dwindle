@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+state_root="${XDG_STATE_HOME:-$HOME/.local/state}/hypr-dwindle"
+backup_dir=${1:-}
+if [[ -z $backup_dir && -f "$state_root/latest-backup" ]]; then
+    backup_dir=$(<"$state_root/latest-backup")
+fi
+[[ -n $backup_dir && -d $backup_dir ]] || { printf 'A backup directory is required.\n' >&2; exit 2; }
+
+kwriteconfig6 --file kwinrc --group Plugins --key hypr-dwindleEnabled false
+for key in magnetileEnabled poloniumEnabled kwiltEnabled krohnkiteEnabled; do
+    [[ -f "$backup_dir/$key" ]] || continue
+    kwriteconfig6 --file kwinrc --group Plugins --key "$key" "$(<"$backup_dir/$key")"
+done
+qdbus6 org.kde.KWin /KWin reconfigure
+printf 'Restored prior tiler plugin states from %s.\n' "$backup_dir"
+printf 'Native [Tiling] state remains in %s/kwinrc.before-hypr-dwindle for deliberate manual restoration.\n' "$backup_dir"

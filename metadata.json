@@ -1,0 +1,15 @@
+{
+  "KPackageStructure": "KWin/Script",
+  "KPlugin": {
+    "Id": "hypr-dwindle",
+    "Name": "Hypr Dwindle",
+    "Description": "Hyprland-inspired aspect-aware dwindle tiling for KWin 6",
+    "Version": "0.1.0",
+    "License": "MIT",
+    "EnabledByDefault": false,
+    "Authors": [{ "Name": "xizha" }]
+  },
+  "X-Plasma-API": "declarativescript",
+  "X-Plasma-API-Minimum-Version": "6.7",
+  "X-Plasma-MainScript": "ui/main.qml"
+}

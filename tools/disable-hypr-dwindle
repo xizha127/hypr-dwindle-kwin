@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+kwriteconfig6 --file kwinrc --group Plugins --key hypr-dwindleEnabled false
+qdbus6 org.kde.KWin /KWin reconfigure
+printf 'Hypr Dwindle disabled; native tile state was not changed.\n'

@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+project_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)
+state_root="${XDG_STATE_HOME:-$HOME/.local/state}/hypr-dwindle"
+timestamp=$(date +%Y%m%d-%H%M%S)
+backup_dir="$state_root/backups/$timestamp"
+mkdir -p "$backup_dir"
+
+for key in magnetileEnabled poloniumEnabled kwiltEnabled krohnkiteEnabled; do
+    kreadconfig6 --file kwinrc --group Plugins --key "$key" > "$backup_dir/$key"
+done
+
+# Keep an untouched copy for manual recovery. restore-hypr-dwindle never writes
+# this wholesale, so unrelated later KWin changes are not clobbered.
+cp "${XDG_CONFIG_HOME:-$HOME/.config}/kwinrc" "$backup_dir/kwinrc.before-hypr-dwindle"
+printf '%s\n' "$backup_dir" > "$state_root/latest-backup"
+
+kpackagetool6 --type KWin/Script --upgrade "$project_dir"
+kwriteconfig6 --file kwinrc --group Plugins --key magnetileEnabled false
+kwriteconfig6 --file kwinrc --group Plugins --key hypr-dwindleEnabled true
+qdbus6 org.kde.KWin /KWin reconfigure
+
+printf 'Installed Hypr Dwindle. Backup: %s\n' "$backup_dir"
+printf 'Do not enable the Caelestia proxy while the direct shortcut profile owns the same chords.\n'

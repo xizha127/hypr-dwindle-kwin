@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0">
+  <kcfgfile name=""/>
+  <group name="">
+    <entry name="gapsIn" type="Int"><default>2</default></entry>
+    <entry name="gapsOut" type="Int"><default>4</default></entry>
+    <entry name="preserveSplit" type="Bool"><default>true</default></entry>
+    <entry name="smartSplit" type="Bool"><default>false</default></entry>
+    <entry name="smartResizing" type="Bool"><default>true</default></entry>
+    <entry name="preciseMouseMove" type="Bool"><default>true</default></entry>
+    <entry name="useActiveForSplits" type="Bool"><default>true</default></entry>
+    <entry name="splitWidthMultiplier" type="Double"><default>1</default></entry>
+    <entry name="defaultSplitRatio" type="Double"><default>1</default></entry>
+    <entry name="ratioMinimum" type="Double"><default>0.1</default></entry>
+    <entry name="ratioMaximum" type="Double"><default>1.9</default></entry>
+    <entry name="logLevel" type="String"><default>warn</default></entry>
+  </group>
+</kcfg>
