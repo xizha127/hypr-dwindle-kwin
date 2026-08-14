@@ -3,7 +3,9 @@ import { DwindleTree } from "./tree.mjs";
 function squaredDistanceToRect(point, rect) {
     const x = Math.max(rect.x, Math.min(point.x, rect.x + rect.width));
     const y = Math.max(rect.y, Math.min(point.y, rect.y + rect.height));
-    return (point.x - x) ** 2 + (point.y - y) ** 2;
+    const dx = point.x - x;
+    const dy = point.y - y;
+    return dx * dx + dy * dy;
 }
 
 export class DwindleManager {
@@ -24,7 +26,8 @@ export class DwindleManager {
     }
 
     rootFor(windowId) {
-        return this.windowRoots.get(windowId) ?? null;
+        const rootKey = this.windowRoots.get(windowId);
+        return rootKey == null ? null : rootKey;
     }
 
     place(windowId, rootKey, {
@@ -54,7 +57,7 @@ export class DwindleManager {
         const rootKey = this.rootFor(windowId);
         if (rootKey == null) return false;
         const tree = this.trees.get(rootKey);
-        tree?.remove(windowId);
+        if (tree != null) tree.remove(windowId);
         this.windowRoots.delete(windowId);
         return true;
     }
@@ -63,14 +66,21 @@ export class DwindleManager {
         const rootKey = this.rootFor(windowId);
         if (rootKey == null) return false;
         const tree = this.treeFor(rootKey);
-        this.parked.set(windowId, { rootKey, ...tree.placementContext(windowId) });
+        const placement = tree.placementContext(windowId);
+        this.parked.set(windowId, {
+            rootKey,
+            siblingId: placement == null ? null : placement.siblingId,
+            orientation: placement == null ? null : placement.orientation,
+            ratio: placement == null ? null : placement.ratio,
+            newFirst: placement == null ? null : placement.newFirst,
+        });
         return this.detach(windowId);
     }
 
     restore(windowId, rootKey, { rootRect, activeWindowId = null, cursorPos = null } = {}) {
         const parked = this.parked.get(windowId);
         const tree = this.treeFor(rootKey);
-        if (parked?.rootKey === rootKey && parked.siblingId != null && tree.has(parked.siblingId)) {
+        if (parked != null && parked.rootKey === rootKey && parked.siblingId != null && tree.has(parked.siblingId)) {
             tree.insert(windowId, {
                 targetId: parked.siblingId,
                 targetRect: tree.layout(rootRect).get(parked.siblingId),

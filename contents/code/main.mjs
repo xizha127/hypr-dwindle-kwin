@@ -46,11 +46,13 @@ class Controller {
     }
 
     contextFor(window) {
-        const output = window.output ?? this.api.workspace.activeScreen;
-        const desktop = window.desktops?.[0] ?? this.api.workspace.currentDesktop;
+        const output = window.output != null ? window.output : this.api.workspace.activeScreen;
+        const desktop = window.desktops != null && window.desktops.length > 0
+            ? window.desktops[0]
+            : this.api.workspace.currentDesktop;
         if (output == null || desktop == null) return null;
-        const outputId = output.name ?? output.uuid ?? String(output);
-        const desktopId = desktop.id ?? desktop.x11DesktopNumber ?? String(desktop);
+        const outputId = output.name != null ? output.name : (output.uuid != null ? output.uuid : String(output));
+        const desktopId = desktop.id != null ? desktop.id : (desktop.x11DesktopNumber != null ? desktop.x11DesktopNumber : String(desktop));
         const key = `${outputId}:${desktopId}`;
         const context = { key, output, desktop };
         this.contexts.set(key, context);

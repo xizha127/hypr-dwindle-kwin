@@ -1,5 +1,6 @@
 export function isEligibleWindow(window) {
-    return window?.normalWindow === true
+    return window != null
+        && window.normalWindow === true
         && window.specialWindow !== true
         && window.popupWindow !== true
         && window.transient !== true

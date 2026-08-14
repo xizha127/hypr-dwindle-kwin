@@ -29,7 +29,11 @@ done
 cp "${XDG_CONFIG_HOME:-$HOME/.config}/kwinrc" "$backup_dir/kwinrc.before-hypr-dwindle"
 printf '%s\n' "$backup_dir" > "$state_root/latest-backup"
 
-kpackagetool6 --type KWin/Script --upgrade "$project_dir"
+if kpackagetool6 --type KWin/Script --show hypr-dwindle >/dev/null 2>&1; then
+    kpackagetool6 --type KWin/Script --upgrade "$project_dir"
+else
+    kpackagetool6 --type KWin/Script --install "$project_dir"
+fi
 kwriteconfig6 --file kwinrc --group Plugins --key magnetileEnabled false
 kwriteconfig6 --file kwinrc --group Plugins --key hypr-dwindleEnabled true
 for index in "${!shortcut_keys[@]}"; do
