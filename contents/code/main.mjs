@@ -33,6 +33,7 @@ class Controller {
         this.tileBindings = new Map();
         this.floating = new Set();
         this.moving = new Set();
+        this.moveCandidates = new Set();
         this.pending = new Map();
         this.flushScheduled = false;
         this.rendering = false;
@@ -193,12 +194,19 @@ class Controller {
         this.windows.delete(id);
         this.floating.delete(id);
         this.moving.delete(id);
+        this.moveCandidates.delete(id);
         this.pending.delete(id);
     }
 
     onMoveStarted(window) {
         const id = windowId(window);
         if (this.manager.rootFor(id) == null) return;
+        this.moveCandidates.add(id);
+    }
+
+    onMoveStepped(window) {
+        const id = windowId(window);
+        if (!this.moveCandidates.has(id) || this.moving.has(id) || window.tile != null) return;
         this.moving.add(id);
         const rootKey = this.manager.rootFor(id);
         this.manager.park(id);
@@ -207,6 +215,7 @@ class Controller {
 
     onMoveFinished(window) {
         const id = windowId(window);
+        this.moveCandidates.delete(id);
         if (!this.moving.delete(id)) return;
         const context = this.contextFor(window);
         if (context == null || !isEligibleWindow(window) || this.floating.has(id)) return;
@@ -306,6 +315,7 @@ class Controller {
         window.minimizedChanged.connect(() => this.queueWindow(window));
         window.maximizedAboutToChange.connect(() => this.queueWindow(window));
         window.interactiveMoveResizeStarted.connect(() => this.onMoveStarted(window));
+        window.interactiveMoveResizeStepped.connect(() => this.onMoveStepped(window));
         window.interactiveMoveResizeFinished.connect(() => this.onMoveFinished(window));
         this.queueWindow(window);
     }
